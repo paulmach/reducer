@@ -1,6 +1,7 @@
 package reducer
 
 // #cgo CFLAGS: -O3
+// #cgo LDFLAGS: -lm
 // #include "ikalman/gps.h"
 // #include "ikalman/gps.c"
 // #include "ikalman/kalman.h"
