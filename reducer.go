@@ -49,7 +49,7 @@ func (r *Reducer) GeoReduce(path *geo.Path) *geo.Path {
 
 	// kalman
 	kf := C.alloc_filter_velocity2d(C.double(r.Noise))
-	for i := 0; i < smoothed.Length(); i++ {
+	for i := 0; i < smoothed.Length()-1; i++ {
 		C.update_velocity2d(kf, C.double(smoothed.GetAt(i).Lat()), C.double(smoothed.GetAt(i).Lng()), 1.0)
 
 		var cLat, cLng C.double
@@ -66,7 +66,9 @@ func (r *Reducer) GeoReduce(path *geo.Path) *geo.Path {
 
 func smooth(path *geo.Path, smooth int) *geo.Path {
 	smoothed := geo.NewPath()
-	for i := 0; i < path.Length(); i++ {
+	smoothed.Push(path.GetAt(0))
+
+	for i := 1; i < path.Length()-1; i++ {
 		p := geo.NewPoint(0, 0)
 		count := 0
 
@@ -83,5 +85,6 @@ func smooth(path *geo.Path, smooth int) *geo.Path {
 		smoothed.Push(p)
 	}
 
+	smoothed.Push(path.GetAt(path.Length() - 1))
 	return smoothed
 }
