@@ -30,10 +30,10 @@ func New() *Reducer {
 	}
 }
 
-// Reduce pulls from a large bag of tricks to remove some of the noise
+// GeoReduce pulls from a large bag of tricks to remove some of the noise
 // that may be found in some slides.
 // TODO: Seriously, please improve/simplify this!
-func (r *Reducer) Reduce(path *geo.Path) *geo.Path {
+func (r *Reducer) GeoReduce(path *geo.Path) *geo.Path {
 	geoDistance := path.GeoDistance()
 	scaleFactor := geo.MercatorScaleFactor(path.Bound().Center().Lat())
 	threshold := r.Threshold * scaleFactor
