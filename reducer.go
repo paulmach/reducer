@@ -64,6 +64,7 @@ func (r *Reducer) GeoReduce(path *geo.Path) *geo.Path {
 	return smoothed
 }
 
+// smooth computes a moving average of plus/minus `smooth` points around each point.
 func smooth(path *geo.Path, smooth int) *geo.Path {
 	smoothed := geo.NewPath()
 	smoothed.Push(path.GetAt(0))
@@ -74,10 +75,10 @@ func smooth(path *geo.Path, smooth int) *geo.Path {
 
 		for j := i - smooth; j <= i+smooth; j++ {
 			if j < 0 || j >= path.Length() {
-				continue
+				p.Add(path.GetAt(i))
+			} else {
+				p.Add(path.GetAt(j))
 			}
-
-			p.Add(path.GetAt(j))
 			count++
 		}
 
